@@ -18,7 +18,7 @@ def compute_signature(index):
     return signature
 
 def get_collection_stats(database, collection):
-    print "Checking DB: %s" % collection.full_name
+    print(("Checking DB: %s" % collection.full_name))
     return database.command("collstats", collection.name)
 
 # From http://www.5dollarwhitebox.org/drupal/node/84
@@ -124,7 +124,7 @@ def main(options):
     x.align["Index Size"] = "r"
     x.padding_width = 1
 
-    print
+    print()
 
     index_size_mapping = {}
     for db in all_db_stats:
@@ -141,11 +141,11 @@ def main(options):
                 x.add_row(row)
 
 
-    print "Index Overview"
-    print x.get_string(sortby="Collection")
+    print("Index Overview")
+    print((x.get_string(sortby="Collection")))
 
-    print
-    print "Top 5 Largest Indexes"
+    print()
+    print("Top 5 Largest Indexes")
     x = PrettyTable(["Collection", "Index","% Size", "Index Size"])
     x.align["Collection"] = "l"
     x.align["Index"] = "l"
@@ -153,22 +153,22 @@ def main(options):
     x.align["Index Size"] = "r"
     x.padding_width = 1
 
-    top_five_indexes = sorted(index_size_mapping.keys(), reverse=True)[0:5]
+    top_five_indexes = sorted(list(index_size_mapping.keys()), reverse=True)[0:5]
     for size in top_five_indexes:
         x.add_row(index_size_mapping.get(size))
-    print x
-    print
+    print(x)
+    print()
 
-    print "Total Documents:", summary_stats["count"]
-    print "Total Data Size:", convert_bytes(summary_stats["size"])
-    print "Total Index Size:", convert_bytes(summary_stats["indexSize"])
+    print(("Total Documents:", summary_stats["count"]))
+    print(("Total Data Size:", convert_bytes(summary_stats["size"])))
+    print(("Total Index Size:", convert_bytes(summary_stats["indexSize"])))
 
     # this is only meaningful if we're running the script on localhost
     if options.host == "localhost":
         ram_headroom = psutil.virtual_memory().total - summary_stats["indexSize"]
-        print "RAM Headroom:", convert_bytes(ram_headroom)
-        print "RAM Used: %s (%s%%)" % (convert_bytes(psutil.virtual_memory().used), psutil.virtual_memory().percent)
-        print "Available RAM Headroom:", convert_bytes((100 - psutil.virtual_memory().percent) / 100 * ram_headroom)
+        print(("RAM Headroom:", convert_bytes(ram_headroom)))
+        print(("RAM Used: %s (%s%%)" % (convert_bytes(psutil.virtual_memory().used), psutil.virtual_memory().percent)))
+        print(("Available RAM Headroom:", convert_bytes((100 - psutil.virtual_memory().percent) / 100 * ram_headroom)))
 
 if __name__ == "__main__":
     options = get_cli_options()

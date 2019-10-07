@@ -68,7 +68,7 @@ def main(options):
         return signature
 
     def report_redundant_indexes(current_db):
-        print "Checking DB: %s" % current_db.name
+        print("Checking DB: %s" % current_db.name)
         indexes = current_db.system.indexes.find()
         index_map = {}
         for index in indexes:
@@ -80,11 +80,11 @@ def main(options):
                 if signature == other_sig:
                     continue
                 if other_sig.startswith(signature):
-                    print "Index %s[%s] may be redundant with %s[%s]" % (
+                    print("Index %s[%s] may be redundant with %s[%s]" % (
                         index_map[signature]["ns"],
                         index_map[signature]["name"],
                         index_map[other_sig]["ns"],
-                        index_map[other_sig]["name"])
+                        index_map[other_sig]["name"]))
 
     databases= []
     if options.database:

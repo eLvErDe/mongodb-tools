@@ -65,4 +65,4 @@ def filter(iterator, field, value):
     embedded documents.
     """
 
-    return itertools.ifilter(lambda x: _deep_get(x, field) == value, iterator)
+    return filter(lambda x: _deep_get(x, field) == value, iterator)
