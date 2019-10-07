@@ -72,12 +72,15 @@ def main(options):
         print("Checking DB: %s" % current_db.name)
         indexes = current_db.system.indexes.find()
         index_map = {}
-        for index in indexes:
-            signature = compute_signature(index)
-            index_map[signature] = index
+        collections = current_db.collection_names()
+        for collection in collections:
+            indexes = current_db[collection].list_indexes()
+            for index in indexes:
+                signature = compute_signature(index)
+                index_map[signature] = index
 
-        for signature in index_map.keys():
-            for other_sig in index_map.keys():
+        for signature in list(index_map.keys()):
+            for other_sig in list(index_map.keys()):
                 if signature == other_sig:
                     continue
                 if other_sig.startswith(signature):
