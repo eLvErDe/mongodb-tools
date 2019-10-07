@@ -10,6 +10,7 @@ import psutil
 from pymongo import MongoClient
 from pymongo import ReadPreference
 from optparse import OptionParser
+from urllib.parse import quote_plus
 
 def compute_signature(index):
     signature = index["ns"]
@@ -58,7 +59,7 @@ def get_cli_options():
 def get_client(host, port, username, password):
     userPass = ""
     if username and password:
-        userPass = username + ":" + password + "@"
+        userPass = quote_plus(username) + ":" + quote_plus(password) + "@"
 
     mongoURI = "mongodb://" + userPass + host + ":" + str(port)
     client = MongoClient(mongoURI)
